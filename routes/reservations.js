@@ -82,16 +82,15 @@ resRouter.get("/:bookingRef", async (req, res) => {
 
 resRouter.post("/", async (req, res) => {
   // console.log("request body", req.body);
-  const { f_name, l_name, phone_number, zipcode } = req.body.final_data;
+  const { f_name, l_name, phone_number, zipcode, file_jointly, has_dependent } = req.body.final_data;
   const {
     app_id,
     app_date,
     app_time,
     app_type,
     app_location,
-    app_status,
-    file_jointly,
-    has_dependents,
+    app_status, //need to update this to show
+
   } = req.body.selectedAppointment;
 
   const bookingRef = createBookingRef(app_location, f_name, l_name);
@@ -153,8 +152,8 @@ resRouter.post("/", async (req, res) => {
         app_time,
         app_type,
         app_location,
-        convertStr2Bool(file_jointly),
-        convertStr2Bool(has_dependents),
+        file_jointly,
+        has_dependent,
       ]);
 
       //update appointment row need to update the status
