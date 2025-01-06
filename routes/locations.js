@@ -32,19 +32,19 @@ locRouter.get("/", async (req, res) => {
 //  route   /api/get-location/:id
 //  access  private
 
-locRouter.get("/:id", async (req, res) => {
-    const loc_id = req.params.id;
+locRouter.get("/:location_id", async (req, res) => {
+    const location_id = req.params.location_id;
     const query = "SELECT * FROM locations WHERE location_id = $1"
     try {
       const location_row = await pool.query(
         query,
-        [loc_id]
+        [parseInt(location_id)]
       );
       if (location_row.rows.length > 0) {
         res.status(200).send({
           status: "success",
           body: location_row.rows[0],
-          message: `successfully retrieved data on location with id of ${loc_id}`,
+          message: `successfully retrieved data on location with id of ${location_id}`,
         });
       }
     } catch (err) {

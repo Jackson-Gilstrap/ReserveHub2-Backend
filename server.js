@@ -3,6 +3,7 @@ import cors from 'cors';
 import appRouter from "./routes/appointments.js";
 import locRouter from "./routes/locations.js";
 import resRouter from "./routes/reservations.js";
+import singleRouter from "./routes/singles.js";
 const port = process.env.PORT || 8000
 
 
@@ -18,17 +19,18 @@ app.use(cors({
 
 
 //  routes
-
+app.use('/api/location/get-appointments/', singleRouter);
 //  appointments
-app.use('/api/get-appointments', appRouter);
-app.use('/api/get-appointment', appRouter);
+app.use('/api/get-appointments/', appRouter);
+
+app.use('/api/get-appointment/', appRouter);
 app.use('/api/create-appointment', appRouter);
 app.use('/api/update-appointment', appRouter);
 app.use('/api/delete-appointment', appRouter);
 
 //  locations
 app.use('/api/get-locations', locRouter);
-app.use('/api/get-location', locRouter);
+app.use('/api/get-location/', locRouter);
 app.use('/api/create-location', locRouter);
 app.use('/api/update-location', locRouter);
 app.use('/api/delete-location', locRouter);

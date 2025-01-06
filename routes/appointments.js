@@ -41,6 +41,8 @@ appRouter.get("/", async (req, res) => {
   }
 });
 
+
+
 //  desc  get one appointment
 //  route /api/get-appointment/:id
 //  access  public
@@ -65,6 +67,7 @@ appRouter.get("/:app_id", async (req, res) => {
     });
   }
 });
+
 
 
 //  desc   create appointment
