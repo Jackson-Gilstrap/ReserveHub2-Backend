@@ -62,17 +62,17 @@ locRouter.get("/:location_id", async (req, res) => {
 //  access  private
 
 locRouter.post("/", async (req, res) => {
-    const { name, streetAddress, city, state, zipcode, weekdayArray } = req.body;
-    const query = "INSERT INTO locations(location_name, location_street_address, location_city, location_state, location_zipcode, weekdays)VALUES($1,$2,$3,$4,$5, $6) RETURNING *"
+    const { location_name, location_street_address, location_city, location_state, location_zipcode } = req.body;
+    const query = "INSERT INTO locations(location_name, location_street_address, location_city, location_state, location_zipcode)VALUES($1,$2,$3,$4,$5) RETURNING *"
     try {
       const loc_row = await pool.query(
         query,
-        [name, streetAddress, city, state, zipcode, weekdayArray]
+        [location_name, location_street_address, location_city, location_state, location_zipcode]
       );
   
       if (loc_row.rows.length > 0) {
         res.status(201).send({
-          ststus: "success",
+          status: "success",
           body: loc_row.rows[0],
           message: "Created location",
         });
@@ -81,7 +81,7 @@ locRouter.post("/", async (req, res) => {
       res.status(500).send({
         status: "failed",
         message: "Internal server error",
-        error: err.message
+        error: error.message
       });
     }
   });

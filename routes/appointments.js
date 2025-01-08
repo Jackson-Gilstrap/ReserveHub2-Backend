@@ -73,24 +73,23 @@ appRouter.get("/:app_id", async (req, res) => {
 //  desc   create appointment
 //  route  /api/create-appointment 
 //  access  private
-appRouter.post("/api/create-appointment", async (req, res) => {
-  const { title, date, time, type, location, maxSlots } = req.body;
+appRouter.post("/", async (req, res) => {
+  const { app_title, app_date, app_time, app_type, app_location, max_slots } = req.body;
   const cur_slots = 0;
   const app_status = 1;
-  const m_slots = parseInt(maxSlots);
   const query =
     "INSERT INTO appointments(app_date, app_time, app_type, app_location, app_status, cur_slots, max_slots, app_title) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *";
 
   try {
     const create_app = await pool.query(query, [
-      date,
-      time,
-      type,
-      location,
+      app_date,
+      app_time,
+      app_type,
+      app_location,
       app_status,
       cur_slots,
-      m_slots,
-      title,
+      parseInt(max_slots),
+      app_title,
     ]);
     if (create_app.rows.length > 0) {
       res.status(201).send({

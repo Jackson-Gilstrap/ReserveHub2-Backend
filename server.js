@@ -38,7 +38,7 @@ app.use('/api/delete-location', locRouter);
 //  reservations
 app.use('/api/get-reservations', resRouter);
 app.use('/api/get-reservation/', resRouter);
-app.use('/api/create-reservation', resRouter); // needs updates !!!
+app.use('/api/create-reservation', resRouter); // needs updates !!! check the appointment before client?
 app.use('/api/update-reservation', resRouter); // not implemented
 app.use('/api/delete-reservation', resRouter); // not implemented
 
