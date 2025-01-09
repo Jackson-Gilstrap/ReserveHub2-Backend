@@ -1,6 +1,6 @@
 import express from "express";
 import pool from "../db/postgres.js";
-import { formattedISO, formattedISOnoTime } from "../utility/datetime/dateConversion.js";
+import { formattedISOnoTime } from "../utility/datetime/dateConversion.js";
 import { timeConverter } from "../utility/datetime/timeConversion.js";
 
 const appRouter = express.Router();
@@ -72,7 +72,7 @@ appRouter.get("/:app_id", async (req, res) => {
 
 //  desc   create appointment
 //  route  /api/create-appointment 
-//  access  private
+//  access private
 appRouter.post("/", async (req, res) => {
   const { app_title, app_date, app_time, app_type, app_location, max_slots } = req.body;
   const cur_slots = 0;

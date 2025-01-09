@@ -1,7 +1,7 @@
 import express from "express";
 import pool from "../db/postgres.js";
 import createBookingRef from "../utility/bookingref.js";
-import { convertStr2Bool } from "../utility/handleCheckbox.js";
+import { makeFirstLetterCapital } from "../utility/validation/strings.js";
 import {formattedISO, formattedISOnoTime} from "../utility/datetime/dateConversion.js";
 import {timeConverter} from "../utility/datetime/timeConversion.js"
 
@@ -93,7 +93,7 @@ resRouter.post("/", async (req, res) => {
 
   } = req.body.selectedAppointment;
 
-  const bookingRef = createBookingRef(app_location, f_name, l_name);
+  const bookingRef = createBookingRef(app_location, makeFirstLetterCapital(f_name), makeFirstLetterCapital(l_name));
   // need to format the file jointly and has dependents corectly
   const check_client_query =
     "SELECT * FROM clients WHERE client_given_name = $1 AND client_surname = $2 AND client_zipcode = $3";
@@ -110,8 +110,8 @@ resRouter.post("/", async (req, res) => {
   try {
     //check if client already exists outside the transaction // but need to check if they have a reservation
     const client = await pool.query(check_client_query, [
-      f_name,
-      l_name,
+      makeFirstLetterCapital(f_name),
+      makeFirstLetterCapital(l_name),
       zipcode,
     ]);
 
@@ -127,8 +127,8 @@ resRouter.post("/", async (req, res) => {
     //might remove as client should already exist
     await pool.query("BEGIN");
     const insertClient = await pool.query(insert_client_query, [
-      f_name,
-      l_name,
+      makeFirstLetterCapital(f_name),
+      makeFirstLetterCapital(l_name),
       zipcode,
       phone_number,
     ]);
