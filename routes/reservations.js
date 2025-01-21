@@ -82,7 +82,7 @@ resRouter.get("/:bookingRef", async (req, res) => {
 
 resRouter.post("/", async (req, res) => {
   // console.log("request body", req.body);
-  const { f_name, l_name, phone_number, zipcode, file_jointly, has_dependent } = req.body.final_data;
+  const { f_name, l_name, phone_number, zipcode, file_jointly, has_dependent, is_tce } = req.body.final_data;
   const {
     app_id,
     app_date,
@@ -102,7 +102,7 @@ resRouter.post("/", async (req, res) => {
   const select_appointment_query =
     "SELECT * FROM appointments WHERE app_id = $1 FOR UPDATE";
   const insert_reservation_query =
-    "INSERT INTO reservations (booking_ref, app_id, client_id, res_date, res_time, res_type, res_location, file_jointly, for_dependent) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *";
+    "INSERT INTO reservations (booking_ref, app_id, client_id, res_date, res_time, res_type, res_location, file_jointly, for_dependent, is_tce) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *";
   const update_appointment_query1 =
     "UPDATE appointments set cur_slots = $1 WHERE app_id = $2";
   const update_appointment_query2 =
@@ -154,6 +154,7 @@ resRouter.post("/", async (req, res) => {
         app_location,
         file_jointly,
         has_dependent,
+        is_tce,
       ]);
 
       //update appointment row need to update the status
@@ -167,6 +168,7 @@ resRouter.post("/", async (req, res) => {
         res_type: row.res_type,
         file_jointly: row.file_jointly,
         for_dependent: row.for_dependent,
+        is_tce: row.is_tce,
         created_at: row.created_at
       }));
 

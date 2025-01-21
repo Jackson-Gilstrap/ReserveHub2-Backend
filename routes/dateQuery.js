@@ -6,7 +6,7 @@ const dateQueryRouter = express.Router();
 
 dateQueryRouter.get("/get-reservations/:date", async (req, res) => {
     const date_param = req.params.date;
-    const query = `select * from fetch_reservations_by_date($1)`
+    const query = `select * from fetch_reservations_by_date($1) order by res_time asc, client_surname asc`
 
     try {
         const data = await pool.query(query, [date_param])

@@ -5,6 +5,7 @@ import locRouter from "./routes/locations.js";
 import resRouter from "./routes/reservations.js";
 import singleRouter from "./routes/singles.js";
 import dateQueryRouter from "./routes/dateQuery.js";
+import appIdRouter from "./routes/app_id.js";
 const port = process.env.PORT || 8000
 
 
@@ -18,11 +19,12 @@ app.use(cors({
     allowedHeaders: ["Content-Type"]
 }))
 
-//going to restructure later
+//going to restructure later!!!!!!!!
 
 //  routes
-app.use('/api/location/get-appointments/', singleRouter);
-app.use('/api/reservations/', dateQueryRouter)
+app.use('/api/location/get-appointments/', singleRouter); //by loc_id
+app.use('/api/reservations/', dateQueryRouter) // by date
+app.use('/api/reservations-2/', appIdRouter) // by app_id
 //  appointments
 app.use('/api/get-appointments/', appRouter);
 
