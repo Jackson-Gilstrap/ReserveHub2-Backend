@@ -6,6 +6,7 @@ import resRouter from "./routes/reservations.js";
 import singleRouter from "./routes/singles.js";
 import dateQueryRouter from "./routes/dateQuery.js";
 import appIdRouter from "./routes/app_id.js";
+import rolesRouter from "./routes/roles.js";
 const port = process.env.PORT || 8000
 
 
@@ -25,6 +26,7 @@ app.use(cors({
 app.use('/api/location/get-appointments/', singleRouter); //by loc_id
 app.use('/api/reservations/', dateQueryRouter) // by date
 app.use('/api/reservations-2/', appIdRouter) // by app_id
+app.use('/api/auth/', rolesRouter)
 //  appointments
 app.use('/api/get-appointments/', appRouter);
 
