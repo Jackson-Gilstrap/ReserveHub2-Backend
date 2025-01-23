@@ -1,67 +1,7 @@
-import express from "express";
 import pool from "../db/postgres.js";
 
-const locRouter = express.Router();
 
-//  desc    get locations
-//  route   /api/get-locations
-//  access  private
-
-locRouter.get("/", async (req, res) => {
-    const query = 'Select * from locations';
-    try {
-      const location_row = await pool.query(query);
-      if (location_row.rows.length > 0) {
-        res.status(200).send({
-          status: "success",
-          body: location_row.rows,
-          message: "successfully retrived all locations",
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "failed",
-        message: "Internal server error", 
-        error: err.message
-      });
-    }
-  });
-
-//  desc    get location
-//  route   /api/get-location/:id
-//  access  private
-
-locRouter.get("/:location_id", async (req, res) => {
-    const location_id = req.params.location_id;
-    const query = "SELECT * FROM locations WHERE location_id = $1"
-    try {
-      const location_row = await pool.query(
-        query,
-        [parseInt(location_id)]
-      );
-      if (location_row.rows.length > 0) {
-        res.status(200).send({
-          status: "success",
-          body: location_row.rows[0],
-          message: `successfully retrieved data on location with id of ${location_id}`,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).send({
-        status: "failed",
-        message: "Internal server error",
-        error: err.message
-      });
-    }
-  });
-
-//  desc    create location
-//  route   /api/create-location
-//  access  private
-
-locRouter.post("/", async (req, res) => {
+export async function create (req, res) {
     const { location_name, location_street_address, location_city, location_state, location_zipcode } = req.body;
     const query = "INSERT INTO locations(location_name, location_street_address, location_city, location_state, location_zipcode)VALUES($1,$2,$3,$4,$5) RETURNING *"
     try {
@@ -84,14 +24,9 @@ locRouter.post("/", async (req, res) => {
         error: error.message
       });
     }
-  });
+}
 
-
-//  desc    update location
-//  route   /api/update-location/:id
-//  access  private
-
-locRouter.put("/:id", async (req, res) => {
+export async function edit (req, res) {
     const loc_id = parseInt(req.params.id);
     const {
       loc_title,
@@ -130,13 +65,9 @@ locRouter.put("/:id", async (req, res) => {
         error: err.message
       });
     } 
-  });
+}
 
-//  desc    delete location
-//  route   /api/delete-location/:id
-//  access  private
-
-locRouter.delete("/:id", async (req, res) => {
+export async function remove (req, res) {
     const loc_id = parseInt(req.params.id);
     const query = "DELETE FROM locations WHERE location_id = $1"
     try {
@@ -156,6 +87,50 @@ locRouter.delete("/:id", async (req, res) => {
         error: err.message
       })
     }
-  });
-  
-  export default locRouter;
+}
+
+export async function read (req, res) {
+    const query = 'Select * from locations';
+    try {
+      const location_row = await pool.query(query);
+      if (location_row.rows.length > 0) {
+        res.status(200).send({
+          status: "success",
+          body: location_row.rows,
+          message: "successfully retrived all locations",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({
+        status: "failed",
+        message: "Internal server error", 
+        error: err.message
+      });
+    }
+}
+
+export async function readWithId (req, res) {
+    const location_id = req.params.location_id;
+    const query = "SELECT * FROM locations WHERE location_id = $1"
+    try {
+      const location_row = await pool.query(
+        query,
+        [parseInt(location_id)]
+      );
+      if (location_row.rows.length > 0) {
+        res.status(200).send({
+          status: "success",
+          body: location_row.rows[0],
+          message: `successfully retrieved data on location with id of ${location_id}`,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({
+        status: "failed",
+        message: "Internal server error",
+        error: err.message
+      });
+    }
+}

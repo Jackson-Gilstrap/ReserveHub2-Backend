@@ -1,88 +1,13 @@
-import express from "express";
 import pool from "../db/postgres.js";
-import createBookingRef from "../utility/bookingref.js";
+import { formattedISO, formattedISOnoTime } from "../utility/datetime/dateConversion.js";
+import { timeConverter } from "../utility/datetime/timeConversion.js";
 import { makeFirstLetterCapital } from "../utility/validation/strings.js";
-import {formattedISO, formattedISOnoTime} from "../utility/datetime/dateConversion.js";
-import {timeConverter} from "../utility/datetime/timeConversion.js"
+import createBookingRef from "../utility/bookingref.js";
 
-const resRouter = express.Router();
+//need to create the delete function and edit the create function make it better
 
-//  desc    get reservations
-//  route   /api/get-reservations
-//  access  private
-resRouter.get("/", async (req, res) => {
-  const query = "Select * from reservations";
-  try {
-    const reservations = await pool.query(query);
-    if (reservations.rows.length > 0) {
-      res.status(200).send({
-        status: "Success",
-        body: reservations.rows,
-        message: "Reservations successfully retrieved",
-      });
-    }
-  } catch (err) {
-    res.status(500).send({
-      status: "Failed",
-      message: "Internal server error",
-      error: err.message,
-    });
-  }
-});
-
-//  desc    get reservation
-//  route   /api/get-reservation/
-//  access  public
-//  not finished
-
-resRouter.get("/:bookingRef", async (req, res) => {
-  const { bookingRef } = req.params;
-  const query = "Select * from reservations where booking_ref = $1";
-  try {
-    const reservations = await pool.query(query, [bookingRef]);
-
-    const {booking_ref, created_at, file_jointly, for_dependent, res_date, res_location, res_time, res_type} = reservations.rows[0]
-    const sanitizedData = {
-      booking_ref,
-      res_date: formattedISOnoTime(res_date),
-      res_time: timeConverter(res_time),
-      res_location,
-      res_type,
-      file_jointly,
-      for_dependent,
-      created_at: formattedISO(created_at),
-    }
-    
-    if (reservations.rows.length > 0) {
-      res.status(200).send({
-        status: "Success",
-        body: sanitizedData,
-        message: "Reservation successfully retrieved",
-      });
-
-      return; // ends function if reservation found.
-    }
-
-    res.status(404).send({
-      status: "Failed",
-      message: "No Reservation found"
-    })
-  } catch (err) {
-    res.status(500).send({
-      status: "Failed",
-      message: "Internal server error",
-      error: err.message,
-    });
-  }
-});
-
-//  desc    create reservations
-//  route   /api/create-reservations
-//  access  public
-
-resRouter.post("/", async (req, res) => {
-  // console.log("request body", req.body);
-  const { f_name, l_name, phone_number, zipcode, file_jointly, has_dependent, is_tce } = req.body.final_data;
+export async function create (req,res) {
+    const { f_name, l_name, phone_number, zipcode, file_jointly, has_dependent, is_tce } = req.body.final_data;
   const {
     app_id,
     app_date,
@@ -197,14 +122,101 @@ resRouter.post("/", async (req, res) => {
       body: "Internal server error",
     });
   }
-});
+}
 
-//  desc    update reservations
-//  route   /api/get-reservations
-//  access  public || private
+export async function remove (req,res) {
 
-//  desc    delete reservations
-//  route   /api/get-reservations
-//  access  public || private
+}
 
-export default resRouter;
+export async function read (req,res) {
+    const query = "Select * from reservations";
+    try {
+      const reservations = await pool.query(query);
+      if (reservations.rows.length > 0) {
+        res.status(200).send({
+          status: "Success",
+          body: reservations.rows,
+          message: "Reservations successfully retrieved",
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        status: "Failed",
+        message: "Internal server error",
+        error: err.message,
+      });
+    }
+}
+
+export async function readWithBookingRef (req,res) {
+    const { bookingRef } = req.params;
+  const query = "Select * from reservations where booking_ref = $1";
+  try {
+    const reservations = await pool.query(query, [bookingRef]);
+
+    const {booking_ref, created_at, file_jointly, for_dependent, res_date, res_location, res_time, res_type} = reservations.rows[0]
+    const sanitizedData = {
+      booking_ref,
+      res_date: formattedISOnoTime(res_date),
+      res_time: timeConverter(res_time),
+      res_location,
+      res_type,
+      file_jointly,
+      for_dependent,
+      created_at: formattedISO(created_at),
+    }
+    
+    if (reservations.rows.length > 0) {
+      res.status(200).send({
+        status: "Success",
+        body: sanitizedData,
+        message: "Reservation successfully retrieved",
+      });
+
+      return; 
+    }
+
+    res.status(404).send({
+      status: "Failed",
+      message: "No Reservation found"
+    })
+  } catch (err) {
+    res.status(500).send({
+      status: "Failed",
+      message: "Internal server error",
+      error: err.message,
+    });
+  }
+}
+
+export async function readWithDate (req,res) {
+    const date_param = req.params.date;
+    const query = `select * from fetch_reservations_by_date($1) order by res_time asc, client_surname asc`
+
+    try {
+        const data = await pool.query(query, [date_param])
+
+        res.status(200).send({
+            body: data.rows
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+export async function readWithAppointmentID (req,res) {
+  const id_param = req.params.id;
+  const query = `select * from fetch_reservation_by_app_id($1) order by client_surname asc`;
+
+  try {
+      const data = await pool.query(query, [id_param])
+
+      res.status(200).send({
+          body: data.rows
+      })
+  } catch (error) {
+      console.log(error)
+  }
+
+}
