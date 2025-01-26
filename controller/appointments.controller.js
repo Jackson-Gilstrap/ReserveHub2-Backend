@@ -87,7 +87,7 @@ export async function remove(req, res) {
     const app_id = parseInt(req.params.id);
   const query = "DELETE FROM appointments WHERE app_id = $1"
   try {
-    const delete_app = await client.query(
+    const delete_app = await pool.query(
       query,
       [app_id]
     );
