@@ -190,6 +190,7 @@ export async function readWithBookingRef(req, res) {
       created_at,
       file_jointly,
       for_dependent,
+      is_tce,
       res_date,
       res_location,
       res_time,
@@ -203,6 +204,7 @@ export async function readWithBookingRef(req, res) {
       res_type,
       file_jointly,
       for_dependent,
+      is_tce,
       created_at: formattedISO(created_at),
     };
 

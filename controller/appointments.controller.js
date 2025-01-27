@@ -139,10 +139,10 @@ export async function read(req, res) {
 }
 
 export async function readWithAppointmentId(req, res) {
-    const app_id = req.params.app_id;
+    const{ id }= req.params;
   const query = "Select * from appointments WHERE app_id = $1";
   try {
-    const app_row = await pool.query(query, [app_id]);
+    const app_row = await pool.query(query, [id]);
 
     if (app_row.rows.length > 0) {
       res.status(200).send({
@@ -161,10 +161,12 @@ export async function readWithAppointmentId(req, res) {
 }
 
 export async function readWithLocationId(req, res) {
-  const location_id = req.params.location_id;
+  console.log(req.params)
+  const {id }= req.params;
+
   const query = "Select * from get_appointments_by_location($1)";
   try {
-    const app_row = await pool.query(query, [parseInt(location_id)]);
+    const app_row = await pool.query(query, [parseInt(id)]);
 
     if (app_row.rows.length > 0) {
       res.status(200).send({
@@ -172,7 +174,7 @@ export async function readWithLocationId(req, res) {
         body: {
           appointments: app_row.rows,
         },
-        message: `Retrieved appointments for ${location_id}`,
+        message: `Retrieved appointments for ${id}`,
       });
     }
   } catch (error) {
