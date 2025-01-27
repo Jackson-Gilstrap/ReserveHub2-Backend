@@ -7,6 +7,11 @@ import appointmentsRouter from "./routes/appointments.route.js";
 import reservationsRouter from "./routes/reservations.route.js";
 
 const port = process.env.PORT || 8000
+const allowsOrigins = [
+    'http://localhost:3000',
+    'https://reserve-hub-phi.vercel.app',
+    'https://freetaxservices.org'
+]
 
 const app = express()
 
@@ -14,7 +19,7 @@ const app = express()
 //  middleware
 app.use(express.json())
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: allowsOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ["Content-Type"]
 }))
