@@ -15,13 +15,24 @@ const allowsOrigins = [
 
 const app = express()
 
+console.log(`Running Node.js version: ${process.version}`);
+
+
+
 
 //  middleware
 app.use(express.json())
 app.use(cors({
-    origin: allowsOrigins,
+    origin: (origin, callback) => {
+        if (allowsOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ["Content-Type"]
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
 }))
 
 //  routes

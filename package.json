@@ -7,10 +7,10 @@
     "start": "node server",
     "dev": "node --watch --env-file=.env server"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["express", "backend", "reservation"],
+  "author": "Hartwick VITA",
+  "license": "UNLICENSED",
+  "description": "Express backend for a reservation system",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
