@@ -13,7 +13,7 @@ const pool_config = {
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
-    port: process.env.PGPORT,
+    port: process.env.PGPORT || 5432,
     ssl: {
         rejectUnauthorized: true, // Use true with a valid certificate
         ca: caCert

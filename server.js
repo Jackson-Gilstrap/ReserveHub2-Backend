@@ -6,7 +6,7 @@ import rolesRouter from "./routes/roles.route.js";
 import appointmentsRouter from "./routes/appointments.route.js";
 import reservationsRouter from "./routes/reservations.route.js";
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8080
 const allowsOrigins = [
     'http://localhost:3000',
     'https://reserve-hub-phi.vercel.app',
@@ -48,6 +48,10 @@ app.use(`/api/appointments`, appointmentsRouter)
 
     //  RESERVATIONS
 app.use(`/api/reservations`, reservationsRouter)
+
+app.get(`/health`, (req, res) => {
+    res.status(200).json({ status: 'ok' });
+})
 
 
 
