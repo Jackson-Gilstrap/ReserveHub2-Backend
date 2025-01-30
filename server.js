@@ -49,6 +49,13 @@ app.use(`/api/appointments`, appointmentsRouter)
     //  RESERVATIONS
 app.use(`/api/reservations`, reservationsRouter)
 
+app.get("/", (req,res)=> {
+    res.status(200).json({
+        status:'ok',
+        env: process.env.NODE_ENV
+    })
+})
+
 app.get(`/health`, (req, res) => {
     res.status(200).json({ status: 'ok' });
 })
