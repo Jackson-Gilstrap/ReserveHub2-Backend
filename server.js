@@ -10,7 +10,8 @@ const port = process.env.PORT || 8080
 const allowsOrigins = [
     'http://localhost:3000',
     'https://reserve-hub-phi.vercel.app',
-    'https://freetaxservices.org'
+    'https://freetaxservices.org',
+    'https://www.freetaxservices.org',
 ]
 
 const app = express()
