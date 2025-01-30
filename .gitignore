@@ -2,7 +2,6 @@ node_modules/
 .env*
 certs/
 .ebingnore
-.ebextensions/
 *.zip
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
