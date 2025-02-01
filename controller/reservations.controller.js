@@ -27,8 +27,8 @@ export async function create(req, res) {
     makeFirstLetterCapital(f_name),
     makeFirstLetterCapital(l_name)
   );
-  const check_client_query = "SELECT * FROM check_clients($1,$2,$3)";
-  const insert_client_query = "select * from insert_clients($1,$2,$3,$4)";
+  const check_client_query = "SELECT * FROM check_client($1,$2,$3)";
+  const insert_client_query = "select * from insert_client($1,$2,$3,$4)";
   const create_reservation_with_client_query =
     "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)";
   const create_reservation_without_client_query =

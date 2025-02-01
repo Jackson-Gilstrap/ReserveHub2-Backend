@@ -25,29 +25,21 @@ export async function create (req, res) {
       });
     }
 }
-
+//fix bug 
 export async function edit (req, res) {
-    const loc_id = parseInt(req.params.id);
-    const {
-      loc_title,
-      loc_street_address,
-      loc_city,
-      loc_state,
-      loc_zipcode,
-      weekdayArray,
-    } = req.body;
-    const query ="UPDATE locations set location_name = $1, location_street_address = $2, location_city = $3, location_state = $4, location_zipcode = $5, weekdays = $6 WHERE location_id = $7 RETURNING *"
+    const location_id = parseInt(req.params.id);
+    const { location_name, location_street_address, location_city, location_state, location_zipcode } = req.body;
+    const query ="UPDATE locations set location_name = $1, location_street_address = $2, location_city = $3, location_state = $4, location_zipcode = $5 WHERE location_id = $6 RETURNING *"
     try {
       const edit_loc = await pool.query(
         query,
         [
-          loc_title,
-          loc_street_address,
-          loc_city,
-          loc_state,
-          loc_zipcode,
-          weekdayArray,
-          loc_id,
+          location_name,
+          location_street_address,
+          location_city,
+          location_state,
+          location_zipcode,
+          location_id,
         ]
       );
       console.log(edit_loc.rows);
@@ -55,7 +47,7 @@ export async function edit (req, res) {
         res.status(201).send({
           status: "success",
           body: edit_loc.rows[0],
-          message: `successfully updated location with id of ${loc_id}`,
+          message: `successfully updated location with id of ${location_id}`,
         });
       }
     } catch (err) {
@@ -68,17 +60,17 @@ export async function edit (req, res) {
 }
 
 export async function remove (req, res) {
-    const loc_id = parseInt(req.params.id);
+    const location_id = parseInt(req.params.id);
     const query = "DELETE FROM locations WHERE location_id = $1"
     try {
       const delete_loc = await client.query(
         query,
-        [loc_id]
+        [location_id]
       );
   
       res.status(200).send({
         status: "success",
-        message: `appointment with id of ${loc_id} has been successfully deleted`,
+        message: `appointment with id of ${location_id} has been successfully deleted`,
       });
     } catch (err) {
       res.status(500).send({
