@@ -48,8 +48,8 @@ export async function create(req, res) {
         create_reservation_with_client_query,
         [
           bookingRef,
-          app_id,
           parseInt(client_id),
+          app_id,
           app_date,
           app_time,
           app_type,
