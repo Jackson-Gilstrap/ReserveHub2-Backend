@@ -42,6 +42,8 @@ export async function create(req, res) {
 
     if (check_client.rows.length > 0) {
       const { client_id } = check_client.rows[0];
+      console.log(client_id)
+      console.log(typeof(client_id))
       const reservation_row = await pool.query(
         create_reservation_with_client_query,
         [
