@@ -99,8 +99,8 @@ export async function create(req, res) {
         create_reservation_without_client_query,
         [
           bookingRef,
-          app_id,
           client_id,
+          app_id,
           app_date,
           app_time,
           app_type,
