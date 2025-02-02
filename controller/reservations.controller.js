@@ -144,7 +144,7 @@ export async function remove(req, res) {
   console.log("running");
   const { bookingRef } = req.params;
   console.log(bookingRef);
-  const query = "DELETE FROM reservations WHERE booking_ref = $1";
+  const query = "SELECT delete_reservation($1);";
   try {
     const delete_app = await pool.query(query, [bookingRef]);
 
