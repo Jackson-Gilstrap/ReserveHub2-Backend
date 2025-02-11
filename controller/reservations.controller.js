@@ -6,6 +6,7 @@ import {
 import { timeConverter } from "../utility/datetime/timeConversion.js";
 import { makeFirstLetterCapital } from "../utility/validation/strings.js";
 import createBookingRef from "../utility/bookingref.js";
+import { join } from "path";
 
 //need to create the delete function and edit the create function make it better
 
@@ -13,6 +14,8 @@ export async function create(req, res) {
   const {
     f_name,
     l_name,
+    j_f_name,
+    j_l_name,
     phone_number,
     zipcode,
     file_jointly,
@@ -22,6 +25,8 @@ export async function create(req, res) {
   const { app_id, app_date, app_time, app_type, app_location } =
     req.body.selectedAppointment;
 
+  const joint_filer = `${j_f_name} ${j_l_name}`
+
   const bookingRef = createBookingRef(
     app_location,
     makeFirstLetterCapital(f_name),
@@ -30,9 +35,9 @@ export async function create(req, res) {
   const check_client_query = "SELECT * FROM check_client($1,$2,$3)";
   const insert_client_query = "select * from insert_client($1,$2,$3,$4)";
   const create_reservation_with_client_query =
-    "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)";
+    "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)";
   const create_reservation_without_client_query =
-    "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)";
+    "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)";
   try {
     const check_client = await pool.query(check_client_query, [
       makeFirstLetterCapital(l_name),
@@ -43,7 +48,7 @@ export async function create(req, res) {
     if (check_client.rows.length > 0) {
       const { client_id } = check_client.rows[0];
       console.log(client_id)
-      console.log(typeof(client_id))
+      
       const reservation_row = await pool.query(
         create_reservation_with_client_query,
         [
@@ -57,6 +62,7 @@ export async function create(req, res) {
           file_jointly,
           has_dependent,
           is_tce,
+          joint_filer,
         ]
       );
 
@@ -70,6 +76,7 @@ export async function create(req, res) {
         for_dependent: row.for_dependent,
         is_tce: row.is_tce,
         created_at: row.created_at,
+        joint_filer: row.joint_filer
       }));
 
       console.log(cleanedReservationData);
@@ -108,6 +115,7 @@ export async function create(req, res) {
           file_jointly,
           has_dependent,
           is_tce,
+          joint_filer,
         ]
       );
 
@@ -121,6 +129,7 @@ export async function create(req, res) {
         for_dependent: row.for_dependent,
         is_tce: row.is_tce,
         created_at: row.created_at,
+        joint_filer: row.joint_filer,
       }));
 
       console.log(cleanedReservationData);
