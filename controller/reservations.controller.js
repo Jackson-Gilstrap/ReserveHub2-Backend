@@ -36,7 +36,7 @@ export async function create(req, res) {
   );
 
   const check_client_query = "SELECT * FROM check_client($1,$2,$3)";
-  const insert_client_query = "select * from insert_client($1,$2,$3,$4)";
+  const insert_client_query = "select * from insert_client($1,$2,$3,$4) AS client_id";
   const create_reservation_with_client_query =
     "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)";
 
@@ -67,7 +67,7 @@ export async function create(req, res) {
         phone_number,
         zipcode,
       ]);
-
+      console.log("Insert client response:", insert_client.rows);
       if (insert_client.rows.length > 0) {
         client_id = insert_client.rows[0].client_id;
         console.log(`New client created with ID: ${client_id}`);
