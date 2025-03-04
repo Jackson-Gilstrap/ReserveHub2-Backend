@@ -140,7 +140,8 @@ export async function create(req, res) {
       booking_ref: bookingRef,
       body: cleanedReservationData,
     });
-  } catch {
+  } catch (error) {
+    console.error("Error creating reservation", error)
     res.status(500).send({ error: "Failed to create reservation" });
   }
 }
