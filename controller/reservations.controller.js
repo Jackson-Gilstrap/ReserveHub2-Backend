@@ -22,6 +22,11 @@ export async function create(req, res) {
     file_jointly,
     has_dependent,
     is_tce,
+    has_w2,
+    has_1099NEC,
+    has_1099MISC,
+    has_w2_os,
+    multi_year,
   } = req.body.final_data;
   const { app_id, app_date, app_time, app_type, app_location } =
     req.body.selectedAppointment;
@@ -101,6 +106,11 @@ export async function create(req, res) {
         has_dependent,
         is_tce,
         joint_filer,
+        has_w2,
+        has_1099NEC,
+        has_1099MISC,
+        has_w2_os,
+        multi_year,
       ]
     );
 
@@ -115,6 +125,11 @@ export async function create(req, res) {
       is_tce: row.is_tce,
       created_at: row.created_at,
       joint_filer: row.joint_filer,
+      has_w2: row.has_w2,
+      has_1099NEC: row.has_1099NEC,
+      has_1099MISC: row.has_1099MISC,
+      has_w2_os: row.has_w2_os,
+      multi_year: row.multi_year,
     }));
 
     console.log(cleanedReservationData);
