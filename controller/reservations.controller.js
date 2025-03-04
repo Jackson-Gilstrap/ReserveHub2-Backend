@@ -43,7 +43,7 @@ export async function create(req, res) {
   const check_client_query = "SELECT * FROM check_client($1,$2,$3)";
   const insert_client_query = "select * from insert_client($1,$2,$3,$4) AS client_id";
   const create_reservation_with_client_query =
-    "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)";
+    "select * from create_reservation($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)";
 
   // first try catch block to attempt to pull client data
   try {
