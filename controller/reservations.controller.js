@@ -105,12 +105,12 @@ export async function create(req, res) {
         file_jointly,
         has_dependent,
         is_tce,
-        joint_filer,
         has_w2,
         has_1099NEC,
         has_1099MISC,
         has_w2_os,
         multi_year,
+        joint_filer,
       ]
     );
 
